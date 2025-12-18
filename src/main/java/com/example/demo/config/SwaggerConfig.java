@@ -13,9 +13,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                // Change the URL if your server/port changes
                 .servers(List.of(
-                        new Server().url("https://9052.pro604cr.amypo.ai/")
+                        new Server().url("https://9005.vs.amypo.ai")
                 ));
     }
 }
