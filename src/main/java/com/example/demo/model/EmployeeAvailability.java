@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 
 @Entity
@@ -10,10 +12,14 @@ public class EmployeeAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Employee must not be null")
     @ManyToOne
     private Employee employee;
 
+    @NotNull(message = "Available date is required")
+    @FutureOrPresent(message = "Available date cannot be in the past")
     private LocalDate availableDate;
+
     private boolean available;
 
     public EmployeeAvailability() {}
