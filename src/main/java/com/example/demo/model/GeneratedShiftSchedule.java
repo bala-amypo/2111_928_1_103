@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,16 +12,24 @@ public class GeneratedShiftSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Shift date is required")
     private LocalDate shiftDate;
+
+    @NotNull(message = "Start time is required")
     private LocalTime startTime;
+
+    @NotNull(message = "End time is required")
     private LocalTime endTime;
 
+    @NotNull(message = "Employee is required")
     @ManyToOne
     private Employee employee;
 
+    @NotNull(message = "Department is required")
     @ManyToOne
     private Department department;
 
+    @NotNull(message = "Shift template is required")
     @ManyToOne
     private ShiftTemplate shiftTemplate;
 
