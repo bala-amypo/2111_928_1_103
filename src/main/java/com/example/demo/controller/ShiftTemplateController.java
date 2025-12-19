@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ShiftTemplate;
 import com.example.demo.service.ShiftTemplateService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,18 +20,21 @@ public class ShiftTemplateController {
     }
 
     @PostMapping("/{departmentId}")
-    public ShiftTemplate create(@PathVariable Long departmentId,
-                                @RequestBody ShiftTemplate template) {
+    public ShiftTemplate create(
+            @PathVariable @NotNull @Positive(message = "Department ID must be positive") Long departmentId,
+            @Valid @RequestBody ShiftTemplate template) {
         return shiftTemplateService.create(template, departmentId);
     }
 
     @GetMapping("/{id}")
-    public ShiftTemplate get(@PathVariable Long id) {
+    public ShiftTemplate get(
+            @PathVariable @NotNull @Positive(message = "Shift ID must be positive") Long id) {
         return shiftTemplateService.get(id);
     }
 
     @GetMapping("/department/{departmentId}")
-    public List<ShiftTemplate> getByDepartment(@PathVariable Long departmentId) {
+    public List<ShiftTemplate> getByDepartment(
+            @PathVariable @NotNull @Positive(message = "Department ID must be positive") Long departmentId) {
         return shiftTemplateService.getByDepartment(departmentId);
     }
 }
