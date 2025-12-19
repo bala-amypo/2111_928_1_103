@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,13 +19,12 @@ public class AuthController {
      * Register a new user
      */
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public User register(@Valid @RequestBody User user) {
         return userService.register(user);
     }
 
     /**
      * Login using email
-     * (Basic version – no password validation yet)
      */
     @GetMapping("/login/{email}")
     public User login(@PathVariable String email) {

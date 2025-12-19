@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeAvailability;
 import com.example.demo.service.AvailabilityService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,9 +21,21 @@ public class AvailabilityController {
     }
 
     @PostMapping("/{employeeId}")
-    public EmployeeAvailability create(@PathVariable Long employeeId,
-                                       @RequestBody EmployeeAvailability availability) {
-        return availabilityService.create(employeeId, availability);
+    public ResponseEntity<?> create(
+            @PathVariable Long employeeId,
+            @Valid @RequestBody EmployeeAvailability availability,
+            BindingResult result) {
+
+        // 🔴 Validation check
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                    result.getFieldErrors().get(0).getDefaultMessage()
+            );
+        }
+
+        return ResponseEntity.ok(
+                availabilityService.create(employeeId, availability)
+        );
     }
 
     @GetMapping("/employee/{employeeId}")
