@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.GeneratedShiftSchedule;
 import com.example.demo.service.ScheduleService;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedule")
+@Validated
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -18,12 +21,26 @@ public class ScheduleController {
     }
 
     @GetMapping("/generate/{date}")
-    public List<GeneratedShiftSchedule> generate(@PathVariable String date) {
+    public List<GeneratedShiftSchedule> generate(
+            @PathVariable
+            @Pattern(
+                regexp = "\\d{4}-\\d{2}-\\d{2}",
+                message = "Date must be in format YYYY-MM-DD"
+            )
+            String date) {
+
         return scheduleService.generateForDate(LocalDate.parse(date));
     }
 
     @GetMapping("/{date}")
-    public List<GeneratedShiftSchedule> getByDate(@PathVariable String date) {
+    public List<GeneratedShiftSchedule> getByDate(
+            @PathVariable
+            @Pattern(
+                regexp = "\\d{4}-\\d{2}-\\d{2}",
+                message = "Date must be in format YYYY-MM-DD"
+            )
+            String date) {
+
         return scheduleService.getByDate(LocalDate.parse(date));
     }
 }
