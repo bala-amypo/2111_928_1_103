@@ -1,17 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Department;
+import com.example.demo.entity.Department;
 import com.example.demo.service.DepartmentService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.validation.annotation.Validated;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/departments")
-@Validated
+@Tag(name = "Departments Endpoints")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -21,13 +19,8 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public Department create(@Valid @RequestBody Department department) {
+    public Department create(@RequestBody Department department) {
         return departmentService.create(department);
-    }
-
-    @GetMapping("/{id}")
-    public Department get(@PathVariable @NotNull Long id) {
-        return departmentService.get(id);
     }
 
     @GetMapping
@@ -35,8 +28,13 @@ public class DepartmentController {
         return departmentService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Department get(@PathVariable Long id) {
+        return departmentService.get(id);
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @NotNull Long id) {
+    public void delete(@PathVariable Long id) {
         departmentService.delete(id);
     }
 }

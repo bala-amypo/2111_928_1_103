@@ -1,12 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
+import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Authentication Endpoints")
 public class AuthController {
 
     private final UserService userService;
@@ -15,19 +16,14 @@ public class AuthController {
         this.userService = userService;
     }
 
-    /**
-     * Register a new user
-     */
     @PostMapping("/register")
-    public User register(@Valid @RequestBody User user) {
+    public User register(@RequestBody User user) {
         return userService.register(user);
     }
 
-    /**
-     * Login using email
-     */
-    @GetMapping("/login/{email}")
-    public User login(@PathVariable String email) {
+    @PostMapping("/login")
+    public User login(@RequestParam String email) {
+        // JWT will be added later
         return userService.findByEmail(email);
     }
 }

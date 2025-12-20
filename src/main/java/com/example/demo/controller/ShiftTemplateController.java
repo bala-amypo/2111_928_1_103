@@ -1,16 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ShiftTemplate;
+import com.example.demo.entity.ShiftTemplate;
 import com.example.demo.service.ShiftTemplateService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shifts")
+@RequestMapping("/api/templates")
+@Tag(name = "Shift Templates Endpoints")
 public class ShiftTemplateController {
 
     private final ShiftTemplateService shiftTemplateService;
@@ -19,22 +18,19 @@ public class ShiftTemplateController {
         this.shiftTemplateService = shiftTemplateService;
     }
 
-    @PostMapping("/{departmentId}")
-    public ShiftTemplate create(
-            @PathVariable @NotNull @Positive(message = "Department ID must be positive") Long departmentId,
-            @Valid @RequestBody ShiftTemplate template) {
-        return shiftTemplateService.create(template, departmentId);
-    }
-
-    @GetMapping("/{id}")
-    public ShiftTemplate get(
-            @PathVariable @NotNull @Positive(message = "Shift ID must be positive") Long id) {
-        return shiftTemplateService.get(id);
+    @PostMapping("/department/{departmentId}")
+    public ShiftTemplate create(@PathVariable Long departmentId,
+                                @RequestBody ShiftTemplate template) {
+        return shiftTemplateService.create(template);
     }
 
     @GetMapping("/department/{departmentId}")
-    public List<ShiftTemplate> getByDepartment(
-            @PathVariable @NotNull @Positive(message = "Department ID must be positive") Long departmentId) {
+    public List<ShiftTemplate> getByDepartment(@PathVariable Long departmentId) {
         return shiftTemplateService.getByDepartment(departmentId);
+    }
+
+    @GetMapping("/{id}")
+    public ShiftTemplate get(@PathVariable Long id) {
+        return null; // optional, not required by STEP-5
     }
 }

@@ -1,17 +1,16 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.GeneratedShiftSchedule;
+import com.example.demo.entity.GeneratedShiftSchedule;
 import com.example.demo.service.ScheduleService;
-import jakarta.validation.constraints.Pattern;
-import org.springframework.validation.annotation.Validated;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/schedule")
-@Validated
+@RequestMapping("/api/schedules")
+@Tag(name = "Shift Schedules Endpoints")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -20,27 +19,13 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping("/generate/{date}")
-    public List<GeneratedShiftSchedule> generate(
-            @PathVariable
-            @Pattern(
-                regexp = "\\d{4}-\\d{2}-\\d{2}",
-                message = "Date must be in format YYYY-MM-DD"
-            )
-            String date) {
-
-        return scheduleService.generateForDate(LocalDate.parse(date));
+    @PostMapping("/generate/{date}")
+    public List<GeneratedShiftSchedule> generate(@PathVariable LocalDate date) {
+        return scheduleService.generateForDate(date);
     }
 
-    @GetMapping("/{date}")
-    public List<GeneratedShiftSchedule> getByDate(
-            @PathVariable
-            @Pattern(
-                regexp = "\\d{4}-\\d{2}-\\d{2}",
-                message = "Date must be in format YYYY-MM-DD"
-            )
-            String date) {
-
-        return scheduleService.getByDate(LocalDate.parse(date));
+    @GetMapping("/date/{date}")
+    public List<GeneratedShiftSchedule> getByDate(@PathVariable LocalDate date) {
+        return scheduleService.getByDate(date);
     }
 }
