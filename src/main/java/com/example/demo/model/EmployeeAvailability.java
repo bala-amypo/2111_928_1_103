@@ -12,9 +12,9 @@ public class EmployeeAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Employee must not be null")
-    @ManyToOne
-    private Employee employee;
+    // Replace the relationship with a simple employee identifier
+    @NotNull(message = "Employee ID must not be null")
+    private Long employeeId;
 
     @NotNull(message = "Available date is required")
     @FutureOrPresent(message = "Available date cannot be in the past")
@@ -32,12 +32,12 @@ public class EmployeeAvailability {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public LocalDate getAvailableDate() {

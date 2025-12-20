@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.util.List;
-
 @Entity
 public class Employee {
 
@@ -34,13 +32,9 @@ public class Employee {
     @Max(80)
     private Integer maxWeeklyHours;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<EmployeeAvailability> availabilityList;
+    public Employee() {}
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<GeneratedShiftSchedule> schedules;
-
-    // ✅ REQUIRED getters & setters
+    // ✅ Getters & setters
 
     public Long getId() {
         return id;

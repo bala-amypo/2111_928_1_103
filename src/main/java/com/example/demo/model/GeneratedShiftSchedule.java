@@ -21,17 +21,15 @@ public class GeneratedShiftSchedule {
     @NotNull(message = "End time is required")
     private LocalTime endTime;
 
-    @NotNull(message = "Employee is required")
-    @ManyToOne
-    private Employee employee;
+    // Replaced relationships with simple IDs
+    @NotNull(message = "Employee ID is required")
+    private Long employeeId;
 
-    @NotNull(message = "Department is required")
-    @ManyToOne
-    private Department department;
+    @NotNull(message = "Department ID is required")
+    private Long departmentId;
 
-    @NotNull(message = "Shift template is required")
-    @ManyToOne
-    private ShiftTemplate shiftTemplate;
+    @NotNull(message = "Shift template ID is required")
+    private Long shiftTemplateId;
 
     public GeneratedShiftSchedule() {}
 
@@ -67,27 +65,27 @@ public class GeneratedShiftSchedule {
         this.endTime = endTime;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public ShiftTemplate getShiftTemplate() {
-        return shiftTemplate;
+    public Long getShiftTemplateId() {
+        return shiftTemplateId;
     }
 
-    public void setShiftTemplate(ShiftTemplate shiftTemplate) {
-        this.shiftTemplate = shiftTemplate;
+    public void setShiftTemplateId(Long shiftTemplateId) {
+        this.shiftTemplateId = shiftTemplateId;
     }
 }
