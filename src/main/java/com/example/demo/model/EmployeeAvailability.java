@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 @Entity
@@ -16,13 +18,16 @@ public class EmployeeAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 🔗 Many Availability → One Employee
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    @NotNull(message = "Available date is required")
     @Column(nullable = false)
     private LocalDate availableDate;
 
+    @NotNull(message = "Availability status is required")
     @Column(nullable = false)
     private Boolean available;
 

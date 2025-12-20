@@ -1,7 +1,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(
@@ -14,28 +20,38 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Employee name is required")
     @Column(nullable = false)
     private String fullName;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "Role is required")
     @Column(nullable = false)
     private String role = "STAFF";
 
+    @NotBlank(message = "Skills are required")
     @Column(nullable = false)
     private String skills; // comma-separated
 
+    @Min(value = 1, message = "Max weekly hours must be greater than 0")
     @Column(nullable = false)
     private Integer maxWeeklyHours;
 
-    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    // 🔗 One Employee → Many Availabilities
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<EmployeeAvailability> availabilities;
+
+    // 🔗 One Employee → Many Generated Schedules
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<GeneratedShiftSchedule> schedules;
 
     public Employee() {}
 
@@ -89,5 +105,21 @@ public class Employee {
  
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public List<EmployeeAvailability> getAvailabilities() {
+        return availabilities;
+    }
+
+    public void setAvailabilities(List<EmployeeAvailability> availabilities) {
+        this.availabilities = availabilities;
+    }
+
+    public List<GeneratedShiftSchedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<GeneratedShiftSchedule> schedules) {
+        this.schedules = schedules;
     }
 }

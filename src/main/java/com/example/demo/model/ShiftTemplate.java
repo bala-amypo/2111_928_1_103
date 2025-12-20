@@ -1,6 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalTime;
 
 @Entity
@@ -16,18 +19,23 @@ public class ShiftTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Template name is required")
     @Column(nullable = false)
     private String templateName;
 
+    @NotNull(message = "Start time is required")
     @Column(nullable = false)
     private LocalTime startTime;
 
+    @NotNull(message = "End time is required")
     @Column(nullable = false)
     private LocalTime endTime;
 
+    @NotBlank(message = "Required skills are mandatory")
     @Column(nullable = false)
     private String requiredSkills;
 
+    // 🔗 Many ShiftTemplates → One Department
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
