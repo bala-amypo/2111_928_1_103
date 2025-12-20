@@ -1,58 +1,62 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 
 @Entity
+@Table(
+        name = "employee_availability",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"employee_id", "availableDate"})
+        }
+)
 public class EmployeeAvailability {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Replace the relationship with a simple employee identifier
-    @NotNull(message = "Employee ID must not be null")
-    private Long employeeId;
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
 
-    @NotNull(message = "Available date is required")
-    @FutureOrPresent(message = "Available date cannot be in the past")
+    @Column(nullable = false)
     private LocalDate availableDate;
 
-    private boolean available;
+    @Column(nullable = false)
+    private Boolean available;
 
     public EmployeeAvailability() {}
 
     public Long getId() {
         return id;
     }
-
+ 
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getEmployeeId() {
-        return employeeId;
+ 
+    public Employee getEmployee() {
+        return employee;
     }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+ 
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
-
+ 
     public LocalDate getAvailableDate() {
         return availableDate;
     }
-
+ 
     public void setAvailableDate(LocalDate availableDate) {
         this.availableDate = availableDate;
     }
-
-    public boolean isAvailable() {
+ 
+    public Boolean getAvailable() {
         return available;
     }
-
-    public void setAvailable(boolean available) {
+ 
+    public void setAvailable(Boolean available) {
         this.available = available;
     }
 }
