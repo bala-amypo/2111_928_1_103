@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface ShiftTemplateRepository extends JpaRepository<ShiftTemplate, Long> {
 
-    ShiftTemplate findByTemplateNameAndDepartment_Id(String templateName, Long departmentId);
-
-    List<ShiftTemplate> findByDepartment_Id(Long departmentId);
+    List<ShiftTemplate> findByDepartmentId(Long departmentId);
 }
