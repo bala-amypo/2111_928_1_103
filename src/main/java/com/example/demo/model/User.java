@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Size;
 public class User {
 
     @Id
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
