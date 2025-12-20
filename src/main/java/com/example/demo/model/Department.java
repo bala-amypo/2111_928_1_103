@@ -1,7 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(
@@ -14,21 +18,23 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Department name is required")
     @Column(nullable = false, unique = true)
     private String name;
 
     private String description;
 
+    @NotBlank(message = "Required skills are mandatory")
     @Column(nullable = false)
     private String requiredSkills;
 
-    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    // 🔗 One Department → Many Shift Templates
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    private List<ShiftTemplate> shiftTemplates;
 
     public Department() {}
 
@@ -66,5 +72,13 @@ public class Department {
  
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public List<ShiftTemplate> getShiftTemplates() {
+        return shiftTemplates;
+    }
+
+    public void setShiftTemplates(List<ShiftTemplate> shiftTemplates) {
+        this.shiftTemplates = shiftTemplates;
     }
 }
