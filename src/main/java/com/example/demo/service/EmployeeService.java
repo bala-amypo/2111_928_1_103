@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Employee;
+import com.example.demo.entity.Employee;
+
 import java.util.List;
 
 public interface EmployeeService {
@@ -9,7 +10,9 @@ public interface EmployeeService {
 
     Employee getEmployee(Long id);
 
-    List<Employee> getAll();
+    Employee updateEmployee(Long id, Employee employee);
 
     void deleteEmployee(Long id);
+
+    List<Employee> getAll();
 }
