@@ -24,9 +24,9 @@ public class ShiftTemplate {
     @NotBlank(message = "Required skills are mandatory")
     private String requiredSkills;
 
-    @NotNull(message = "Department is required")
-    @ManyToOne
-    private Department department;
+    // Replaced relationship with simple departmentId
+    @NotNull(message = "Department ID is required")
+    private Long departmentId;
 
     public ShiftTemplate() {}
 
@@ -70,11 +70,11 @@ public class ShiftTemplate {
         this.requiredSkills = requiredSkills;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 }
