@@ -1,9 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeAvailability;
 import com.example.demo.repository.AvailabilityRepository;
-import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AvailabilityService;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +12,15 @@ import java.util.List;
 public class AvailabilityServiceImpl implements AvailabilityService {
 
     private final AvailabilityRepository availabilityRepository;
-    private final EmployeeRepository employeeRepository;
 
-    public AvailabilityServiceImpl(AvailabilityRepository availabilityRepository,
-                                   EmployeeRepository employeeRepository) {
+    public AvailabilityServiceImpl(AvailabilityRepository availabilityRepository) {
         this.availabilityRepository = availabilityRepository;
-        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public EmployeeAvailability create(Long employeeId, EmployeeAvailability availability) {
-        Employee employee = employeeRepository.findById(employeeId).orElse(null);
-        availability.setEmployee(employee);
+        // Set employeeId directly
+        availability.setEmployeeId(employeeId);
         return availabilityRepository.save(availability);
     }
 
@@ -36,7 +31,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     @Override
     public List<EmployeeAvailability> getByEmployee(Long employeeId) {
-        return availabilityRepository.findByEmployee_Id(employeeId);
+        return availabilityRepository.findByEmployeeId(employeeId);
     }
 
     @Override
