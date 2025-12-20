@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.ShiftTemplate;
+import com.example.demo.entity.Department;
+import com.example.demo.entity.ShiftTemplate;
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.ShiftTemplateRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.stereotype.Service;
@@ -10,26 +12,27 @@ import java.util.List;
 @Service
 public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
-    private final ShiftTemplateRepository shiftTemplateRepository;
+    private final ShiftTemplateRepository templateRepository;
+    private final DepartmentRepository departmentRepository;
 
-    public ShiftTemplateServiceImpl(ShiftTemplateRepository shiftTemplateRepository) {
-        this.shiftTemplateRepository = shiftTemplateRepository;
+    public ShiftTemplateServiceImpl(ShiftTemplateRepository templateRepository,
+                                   DepartmentRepository departmentRepository) {
+        this.templateRepository = templateRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
-    public ShiftTemplate create(ShiftTemplate template, Long departmentId) {
-        // Set departmentId directly
-        template.setDepartmentId(departmentId);
-        return shiftTemplateRepository.save(template);
-    }
-
-    @Override
-    public ShiftTemplate get(Long id) {
-        return shiftTemplateRepository.findById(id).orElse(null);
+    public ShiftTemplate create(ShiftTemplate template) {
+        if (template.getEndTime().isBefore(template.getStartTime())) {
+            throw new RuntimeException("End time must be after start time");
+        }
+        return templateRepository.save(template);
     }
 
     @Override
     public List<ShiftTemplate> getByDepartment(Long departmentId) {
-        return shiftTemplateRepository.findByDepartmentId(departmentId);
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+        return templateRepository.findByDepartment(department);
     }
 }

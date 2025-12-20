@@ -1,14 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.EmployeeAvailability;
-import com.example.demo.model.GeneratedShiftSchedule;
-import com.example.demo.model.ShiftTemplate;
-import com.example.demo.repository.AvailabilityRepository;
-import com.example.demo.repository.GeneratedShiftScheduleRepository;
-import com.example.demo.repository.ShiftTemplateRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.ScheduleService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,51 +12,47 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private final AvailabilityRepository availabilityRepository;
-    private final ShiftTemplateRepository shiftTemplateRepository;
+    private final ShiftTemplateRepository templateRepository;
+    private final EmployeeAvailabilityRepository availabilityRepository;
     private final GeneratedShiftScheduleRepository scheduleRepository;
 
-    public ScheduleServiceImpl(
-            AvailabilityRepository availabilityRepository,
-            ShiftTemplateRepository shiftTemplateRepository,
-            GeneratedShiftScheduleRepository scheduleRepository) {
-
+    public ScheduleServiceImpl(ShiftTemplateRepository templateRepository,
+                               EmployeeAvailabilityRepository availabilityRepository,
+                               GeneratedShiftScheduleRepository scheduleRepository) {
+        this.templateRepository = templateRepository;
         this.availabilityRepository = availabilityRepository;
-        this.shiftTemplateRepository = shiftTemplateRepository;
         this.scheduleRepository = scheduleRepository;
     }
 
     @Override
-    @Transactional
     public List<GeneratedShiftSchedule> generateForDate(LocalDate date) {
 
         List<EmployeeAvailability> availableEmployees =
-                availabilityRepository.findByAvailableDateAndAvailable(date, true);
+                availabilityRepository.findByAvailableDateAndAvailableTrue(date);
 
-        System.out.println("Available employees: " + availableEmployees.size());
-
-        List<ShiftTemplate> shiftTemplates = shiftTemplateRepository.findAll();
-        System.out.println("Shift templates: " + shiftTemplates.size());
-
+        List<ShiftTemplate> templates = templateRepository.findAll();
         List<GeneratedShiftSchedule> schedules = new ArrayList<>();
 
-        for (EmployeeAvailability availability : availableEmployees) {
-            for (ShiftTemplate template : shiftTemplates) {
+        for (ShiftTemplate template : templates) {
+            for (EmployeeAvailability availability : availableEmployees) {
 
-                GeneratedShiftSchedule schedule = new GeneratedShiftSchedule();
-                schedule.setShiftDate(date);
-                schedule.setStartTime(template.getStartTime());
-                schedule.setEndTime(template.getEndTime());
-                schedule.setEmployeeId(availability.getEmployeeId());
-                schedule.setDepartmentId(template.getDepartmentId());
-                schedule.setShiftTemplateId(template.getId());
+                Employee emp = availability.getEmployee();
 
-                schedules.add(schedule);
+                if (emp.getSkills().contains(template.getRequiredSkills())) {
+                    GeneratedShiftSchedule schedule = new GeneratedShiftSchedule();
+                    schedule.setShiftDate(date);
+                    schedule.setStartTime(template.getStartTime());
+                    schedule.setEndTime(template.getEndTime());
+                    schedule.setDepartment(template.getDepartment());
+                    schedule.setShiftTemplate(template);
+                    schedule.setEmployee(emp);
+
+                    schedules.add(scheduleRepository.save(schedule));
+                    break; // first qualified employee
+                }
             }
         }
-
-        // 🔥 THIS LINE ACTUALLY INSERTS INTO DATABASE
-        return scheduleRepository.saveAll(schedules);
+        return schedules;
     }
 
     @Override
