@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(
-        name = "shift_templates",
+        name = "shift_template",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"templateName", "department_id"})
         }
