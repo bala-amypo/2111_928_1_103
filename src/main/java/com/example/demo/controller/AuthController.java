@@ -23,7 +23,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public User login(@RequestParam String email) {
-        // JWT will be added later
         return userService.findByEmail(email);
     }
 }

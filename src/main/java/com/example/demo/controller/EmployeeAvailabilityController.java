@@ -25,7 +25,7 @@ public class EmployeeAvailabilityController {
         this.employeeService = employeeService;
     }
 
-    // ✅ CREATE availability for an employee
+  
     @PostMapping("/employee/{employeeId}")
     public EmployeeAvailability create(
             @PathVariable Long employeeId,
@@ -37,7 +37,6 @@ public class EmployeeAvailabilityController {
         return availabilityService.create(availability);
     }
 
-    // ✅ GET availability by date (required by spec)
     @GetMapping("/date/{date}")
     public List<EmployeeAvailability> getByDate(@PathVariable LocalDate date) {
         return availabilityService.getByDate(date);

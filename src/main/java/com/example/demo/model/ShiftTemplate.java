@@ -35,7 +35,7 @@ public class ShiftTemplate {
     @Column(nullable = false)
     private String requiredSkills;
 
-    // 🔗 Many ShiftTemplates → One Department
+   
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
