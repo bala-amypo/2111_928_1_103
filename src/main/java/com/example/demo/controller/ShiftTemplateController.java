@@ -20,7 +20,7 @@ public class ShiftTemplateController {
     }
 
     @PostMapping("/department/{departmentId}")
-    public ShiftTemplate create(
+    public ShiftTemplate createTemplate(
             @PathVariable Long departmentId,
             @Valid @RequestBody ShiftTemplate template
     ) {
@@ -28,7 +28,14 @@ public class ShiftTemplateController {
     }
 
     @GetMapping("/department/{departmentId}")
-    public List<ShiftTemplate> getByDepartment(@PathVariable Long departmentId) {
+    public List<ShiftTemplate> getTemplatesByDepartment(
+            @PathVariable Long departmentId
+    ) {
         return shiftTemplateService.getByDepartment(departmentId);
+    }
+
+    @GetMapping("/{id}")
+    public ShiftTemplate getTemplate(@PathVariable Long id) {
+        return shiftTemplateService.getById(id);
     }
 }
