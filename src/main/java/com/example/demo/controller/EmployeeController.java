@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/register")
-    public Employee create(@RequestBody Employee employee) {
+    public Employee create(@Valid @RequestBody Employee employee) {
         return employeeService.createEmployee(employee);
     }
 

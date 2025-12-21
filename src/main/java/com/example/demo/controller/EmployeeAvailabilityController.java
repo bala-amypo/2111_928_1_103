@@ -5,6 +5,7 @@ import com.example.demo.entity.EmployeeAvailability;
 import com.example.demo.service.AvailabilityService;
 import com.example.demo.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -25,11 +26,10 @@ public class EmployeeAvailabilityController {
         this.employeeService = employeeService;
     }
 
-  
     @PostMapping("/employee/{employeeId}")
     public EmployeeAvailability create(
             @PathVariable Long employeeId,
-            @RequestBody EmployeeAvailability availability) {
+            @Valid @RequestBody EmployeeAvailability availability) {
 
         Employee employee = employeeService.getEmployee(employeeId);
         availability.setEmployee(employee);

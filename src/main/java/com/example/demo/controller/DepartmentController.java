@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.Department;
 import com.example.demo.service.DepartmentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public Department create(@RequestBody Department department) {
+    public Department create(@Valid @RequestBody Department department) {
         return departmentService.create(department);
     }
 
