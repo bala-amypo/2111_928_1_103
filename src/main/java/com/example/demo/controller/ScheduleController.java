@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.GeneratedShiftSchedule;
 import com.example.demo.service.ScheduleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,12 +21,14 @@ public class ScheduleController {
     }
 
     @PostMapping("/generate/{date}")
-    public List<GeneratedShiftSchedule> generate(@PathVariable LocalDate date) {
+    public List<GeneratedShiftSchedule> generate(
+            @NotNull @PathVariable LocalDate date) {
         return scheduleService.generateForDate(date);
     }
 
     @GetMapping("/date/{date}")
-    public List<GeneratedShiftSchedule> getByDate(@PathVariable LocalDate date) {
+    public List<GeneratedShiftSchedule> getByDate(
+            @NotNull @PathVariable LocalDate date) {
         return scheduleService.getByDate(date);
     }
 }
