@@ -32,7 +32,6 @@ public class Department {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    // 🔗 One Department → Many Shift Templates
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<ShiftTemplate> shiftTemplates;
 

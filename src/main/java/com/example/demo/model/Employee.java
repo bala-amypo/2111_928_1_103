@@ -35,7 +35,7 @@ public class Employee {
 
     @NotBlank(message = "Skills are required")
     @Column(nullable = false)
-    private String skills; // comma-separated
+    private String skills; 
 
     @Min(value = 1, message = "Max weekly hours must be greater than 0")
     @Column(nullable = false)
@@ -45,11 +45,11 @@ public class Employee {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    // 🔗 One Employee → Many Availabilities
+   
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<EmployeeAvailability> availabilities;
 
-    // 🔗 One Employee → Many Generated Schedules
+   
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<GeneratedShiftSchedule> schedules;
 

@@ -26,17 +26,16 @@ public class GeneratedShiftSchedule {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    // 🔗 Many schedules → One ShiftTemplate
     @ManyToOne
     @JoinColumn(name = "shift_template_id", nullable = false)
     private ShiftTemplate shiftTemplate;
 
-    // 🔗 Many schedules → One Department
+    
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    // 🔗 Many schedules → One Employee
+    
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
