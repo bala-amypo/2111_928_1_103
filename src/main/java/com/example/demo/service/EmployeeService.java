@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.model.Employee;
 
 import java.util.List;
 
@@ -15,4 +15,6 @@ public interface EmployeeService {
     void deleteEmployee(Long id);
 
     List<Employee> getAll();
+
+    Employee findByEmail(String email);
 }
