@@ -1,16 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Department;
+import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/departments")
-@Tag(name = "Departments Endpoints")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -20,22 +18,23 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public Department create(@Valid @RequestBody Department department) {
-        return departmentService.create(department);
+    public ResponseEntity<Department> create(@RequestBody Department department) {
+        return ResponseEntity.ok(departmentService.create(department));
     }
 
     @GetMapping
-    public List<Department> getAll() {
-        return departmentService.getAll();
+    public ResponseEntity<List<Department>> list() {
+        return ResponseEntity.ok(departmentService.getAll());
     }
 
     @GetMapping("/{id}")
-    public Department get(@PathVariable Long id) {
-        return departmentService.get(id);
+    public ResponseEntity<Department> get(@PathVariable Long id) {
+        return ResponseEntity.ok(departmentService.get(id));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         departmentService.delete(id);
+        return ResponseEntity.ok("Deleted");
     }
 }
