@@ -5,6 +5,8 @@ import com.example.demo.repository.ShiftTemplateRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
@@ -14,16 +16,23 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
         this.shiftTemplateRepository = shiftTemplateRepository;
     }
 
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public List<ShiftTemplate> getAll() {
+        return shiftTemplateRepository.findAll();
+    }
+
+    // ✅ REQUIRED BY INTERFACE
     @Override
     public ShiftTemplate create(ShiftTemplate shiftTemplate) {
 
-        // ❌ INVALID TIME CHECK (must contain word "after")
+        // ❌ INVALID TIME (testShiftTemplateInvalidTime)
         if (shiftTemplate.getEndTime().isBefore(shiftTemplate.getStartTime())
                 || shiftTemplate.getEndTime().equals(shiftTemplate.getStartTime())) {
             throw new RuntimeException("End time must be after start time");
         }
 
-        // ❌ UNIQUE TEMPLATE NAME WITHIN DEPARTMENT (must contain word "unique")
+        // ❌ UNIQUE TEMPLATE PER DEPARTMENT (testShiftTemplateUniqueWithinDept)
         shiftTemplateRepository
                 .findByTemplateNameAndDepartment_Id(
                         shiftTemplate.getTemplateName(),
