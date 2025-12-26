@@ -16,23 +16,29 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
         this.shiftTemplateRepository = shiftTemplateRepository;
     }
 
-    // ✅ REQUIRED BY INTERFACE
+    // ✅ REQUIRED BY TESTS
     @Override
     public List<ShiftTemplate> getAll() {
         return shiftTemplateRepository.findAll();
     }
 
-    // ✅ REQUIRED BY INTERFACE
+    // ✅ REQUIRED BY TESTS
+    @Override
+    public ShiftTemplate getById(Long id) {
+        return shiftTemplateRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ShiftTemplate not found"));
+    }
+
+    // ✅ REQUIRED BY TESTS
     @Override
     public ShiftTemplate create(ShiftTemplate shiftTemplate) {
 
-        // ❌ INVALID TIME (testShiftTemplateInvalidTime)
-        if (shiftTemplate.getEndTime().isBefore(shiftTemplate.getStartTime())
-                || shiftTemplate.getEndTime().equals(shiftTemplate.getStartTime())) {
+        // ❌ INVALID TIME TEST
+        if (!shiftTemplate.getEndTime().isAfter(shiftTemplate.getStartTime())) {
             throw new RuntimeException("End time must be after start time");
         }
 
-        // ❌ UNIQUE TEMPLATE PER DEPARTMENT (testShiftTemplateUniqueWithinDept)
+        // ❌ UNIQUE WITHIN DEPARTMENT TEST
         shiftTemplateRepository
                 .findByTemplateNameAndDepartment_Id(
                         shiftTemplate.getTemplateName(),
