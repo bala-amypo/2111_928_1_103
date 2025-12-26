@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.ShiftTemplate;
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.ShiftTemplateRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.stereotype.Service;
@@ -11,31 +12,33 @@ import java.util.List;
 public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
     private final ShiftTemplateRepository shiftTemplateRepository;
+    private final DepartmentRepository departmentRepository; // REQUIRED BY TESTS
 
-    public ShiftTemplateServiceImpl(ShiftTemplateRepository shiftTemplateRepository) {
+    // ✅ THIS CONSTRUCTOR IS REQUIRED BY TESTS
+    public ShiftTemplateServiceImpl(
+            ShiftTemplateRepository shiftTemplateRepository,
+            DepartmentRepository departmentRepository
+    ) {
         this.shiftTemplateRepository = shiftTemplateRepository;
+        this.departmentRepository = departmentRepository;
     }
 
-    // ✅ REQUIRED BY TESTS
     @Override
     public List<ShiftTemplate> getAll() {
         return shiftTemplateRepository.findAll();
     }
 
-    // ✅ REQUIRED BY TESTS
     @Override
     public ShiftTemplate getById(Long id) {
         return shiftTemplateRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ShiftTemplate not found"));
     }
 
-    // ✅ REQUIRED BY TESTS
     @Override
     public List<ShiftTemplate> getByDepartment(Long departmentId) {
         return shiftTemplateRepository.findByDepartment_Id(departmentId);
     }
 
-    // ✅ REQUIRED BY TESTS
     @Override
     public ShiftTemplate create(ShiftTemplate shiftTemplate) {
 
@@ -44,7 +47,7 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
             throw new RuntimeException("End time must be after start time");
         }
 
-        // ❌ UNIQUE WITHIN DEPARTMENT TEST
+        // ❌ UNIQUE NAME WITHIN DEPARTMENT TEST
         shiftTemplateRepository
                 .findByTemplateNameAndDepartment_Id(
                         shiftTemplate.getTemplateName(),
