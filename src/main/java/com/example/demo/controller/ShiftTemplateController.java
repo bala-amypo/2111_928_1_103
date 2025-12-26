@@ -15,7 +15,7 @@ public class ShiftTemplateController {
     private final ShiftTemplateService shiftTemplateService;
     private final DepartmentRepository departmentRepository;
 
-    // ✅ TEST-EXPECTED CONSTRUCTOR
+    // ✅ REQUIRED by TestNG (DO NOT CHANGE)
     public ShiftTemplateController(
             ShiftTemplateService shiftTemplateService,
             DepartmentRepository departmentRepository
@@ -24,12 +24,23 @@ public class ShiftTemplateController {
         this.departmentRepository = departmentRepository;
     }
 
-    // ✅ TEST CALLS list().getBody()
+    // ✅ REQUIRED for EMPTY DATABASE (Swagger POST)
+    @PostMapping
+    public ResponseEntity<ShiftTemplate> create(
+            @RequestBody ShiftTemplate template
+    ) {
+        return ResponseEntity.ok(shiftTemplateService.create(template));
+    }
+
+    // ✅ REQUIRED BY TEST:
+    // testShiftTemplateControllerList()
     @GetMapping
     public ResponseEntity<List<ShiftTemplate>> list() {
         return ResponseEntity.ok(shiftTemplateService.getAll());
     }
 
+    // ✅ REQUIRED BY TEST:
+    // testShiftTemplateQuery()
     @GetMapping("/department/{departmentId}")
     public ResponseEntity<List<ShiftTemplate>> listByDepartment(
             @PathVariable Long departmentId
