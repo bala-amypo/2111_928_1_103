@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.ShiftTemplate;
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.ShiftTemplateRepository;
 import com.example.demo.service.ShiftTemplateService;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,15 @@ import java.util.List;
 public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
     private final ShiftTemplateRepository shiftTemplateRepository;
+    private final DepartmentRepository departmentRepository;
 
-    public ShiftTemplateServiceImpl(ShiftTemplateRepository shiftTemplateRepository) {
+    // ✅ TEST-EXPECTED CONSTRUCTOR
+    public ShiftTemplateServiceImpl(
+            ShiftTemplateRepository shiftTemplateRepository,
+            DepartmentRepository departmentRepository
+    ) {
         this.shiftTemplateRepository = shiftTemplateRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
@@ -32,7 +39,6 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
                 .orElseThrow(() -> new RuntimeException("ShiftTemplate not found"));
     }
 
-    // ✅ REQUIRED BY TEST
     @Override
     public List<ShiftTemplate> getAll() {
         return shiftTemplateRepository.findAll();

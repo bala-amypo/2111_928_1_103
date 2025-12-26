@@ -11,6 +11,5 @@ public interface ShiftTemplateService {
 
     ShiftTemplate getById(Long id);
 
-    // ✅ REQUIRED BY TEST
     List<ShiftTemplate> getAll();
 }

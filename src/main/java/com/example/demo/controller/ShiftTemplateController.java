@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.ShiftTemplate;
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.service.ShiftTemplateService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,19 +13,29 @@ import java.util.List;
 public class ShiftTemplateController {
 
     private final ShiftTemplateService shiftTemplateService;
+    private final DepartmentRepository departmentRepository;
 
-    public ShiftTemplateController(ShiftTemplateService shiftTemplateService) {
+    // ✅ TEST-EXPECTED CONSTRUCTOR
+    public ShiftTemplateController(
+            ShiftTemplateService shiftTemplateService,
+            DepartmentRepository departmentRepository
+    ) {
         this.shiftTemplateService = shiftTemplateService;
+        this.departmentRepository = departmentRepository;
     }
 
-    // ✅ REQUIRED BY TEST (NO ARGUMENTS)
+    // ✅ TEST CALLS list().getBody()
     @GetMapping
-    public List<ShiftTemplate> list() {
-        return shiftTemplateService.getAll();
+    public ResponseEntity<List<ShiftTemplate>> list() {
+        return ResponseEntity.ok(shiftTemplateService.getAll());
     }
 
     @GetMapping("/department/{departmentId}")
-    public List<ShiftTemplate> listByDepartment(@PathVariable Long departmentId) {
-        return shiftTemplateService.getByDepartment(departmentId);
+    public ResponseEntity<List<ShiftTemplate>> listByDepartment(
+            @PathVariable Long departmentId
+    ) {
+        return ResponseEntity.ok(
+                shiftTemplateService.getByDepartment(departmentId)
+        );
     }
 }
