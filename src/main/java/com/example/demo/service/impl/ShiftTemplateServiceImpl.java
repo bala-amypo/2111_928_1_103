@@ -31,6 +31,12 @@ public class ShiftTemplateServiceImpl implements ShiftTemplateService {
 
     // ✅ REQUIRED BY TESTS
     @Override
+    public List<ShiftTemplate> getByDepartment(Long departmentId) {
+        return shiftTemplateRepository.findByDepartment_Id(departmentId);
+    }
+
+    // ✅ REQUIRED BY TESTS
+    @Override
     public ShiftTemplate create(ShiftTemplate shiftTemplate) {
 
         // ❌ INVALID TIME TEST
