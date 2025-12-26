@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.ShiftTemplate;
+import com.example.demo.model.ShiftTemplate;
 import com.example.demo.service.ShiftTemplateService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
