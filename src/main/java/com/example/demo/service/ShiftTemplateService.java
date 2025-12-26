@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.model.ShiftTemplate;
-
 import java.util.List;
 
 public interface ShiftTemplateService {
@@ -11,4 +10,7 @@ public interface ShiftTemplateService {
     List<ShiftTemplate> getByDepartment(Long departmentId);
 
     ShiftTemplate getById(Long id);
+
+    // ✅ REQUIRED BY TEST
+    List<ShiftTemplate> getAll();
 }
