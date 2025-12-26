@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.GeneratedShiftSchedule;
+import com.example.demo.model.GeneratedShiftSchedule;
 import com.example.demo.service.ScheduleService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedules")
-@Tag(name = "Shift Schedules Endpoints")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -21,14 +19,20 @@ public class ScheduleController {
     }
 
     @PostMapping("/generate/{date}")
-    public List<GeneratedShiftSchedule> generate(
-            @NotNull @PathVariable LocalDate date) {
-        return scheduleService.generateForDate(date);
+    public ResponseEntity<List<GeneratedShiftSchedule>> generate(
+            @PathVariable String date) {
+
+        return ResponseEntity.ok(
+                scheduleService.generateForDate(LocalDate.parse(date))
+        );
     }
 
     @GetMapping("/date/{date}")
-    public List<GeneratedShiftSchedule> getByDate(
-            @NotNull @PathVariable LocalDate date) {
-        return scheduleService.getByDate(date);
+    public ResponseEntity<List<GeneratedShiftSchedule>> byDate(
+            @PathVariable String date) {
+
+        return ResponseEntity.ok(
+                scheduleService.getByDate(LocalDate.parse(date))
+        );
     }
 }
