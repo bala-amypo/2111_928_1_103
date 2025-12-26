@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Department;
+import com.example.demo.model.Department;
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.service.DepartmentService;
 import org.springframework.stereotype.Service;
@@ -16,25 +16,43 @@ public class DepartmentServiceImpl implements DepartmentService {
         this.departmentRepository = departmentRepository;
     }
 
+    // -------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------
     @Override
     public Department create(Department department) {
+
         if (departmentRepository.existsByName(department.getName())) {
             throw new RuntimeException("Department name already exists");
         }
+
         return departmentRepository.save(department);
     }
 
+    // -------------------------------------------------------
+    // READ
+    // -------------------------------------------------------
     @Override
     public Department get(Long id) {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
     }
 
+    // -------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------
     @Override
     public void delete(Long id) {
-        departmentRepository.deleteById(id);
+
+        Department existing = departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        departmentRepository.delete(existing);
     }
 
+    // -------------------------------------------------------
+    // LIST
+    // -------------------------------------------------------
     @Override
     public List<Department> getAll() {
         return departmentRepository.findAll();
