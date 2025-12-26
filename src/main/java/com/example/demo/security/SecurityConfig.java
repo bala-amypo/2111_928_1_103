@@ -29,7 +29,6 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // ✅ ENABLE LOGIN PAGE
             .formLogin(form -> form
                 .defaultSuccessUrl("/swagger-ui/index.html", true)
                 .permitAll()
@@ -43,7 +42,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ✅ SIMPLE USER FOR REVIEW / TESTING
+
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
 
