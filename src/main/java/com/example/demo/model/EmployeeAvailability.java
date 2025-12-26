@@ -1,16 +1,12 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 
 @Entity
 @Table(
-        name = "employee_availability",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"employee_id", "availableDate"})
-        }
+    name = "employee_availability",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"employee_id", "availableDate"})
 )
 public class EmployeeAvailability {
 
@@ -18,50 +14,31 @@ public class EmployeeAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @NotNull(message = "Available date is required")
-    @Column(nullable = false)
     private LocalDate availableDate;
-
-    @NotNull(message = "Availability status is required")
-    @Column(nullable = false)
-    private Boolean available;
+    private boolean available;
 
     public EmployeeAvailability() {}
 
-    public Long getId() {
-        return id;
-    }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
- 
-    public Employee getEmployee() {
-        return employee;
-    }
- 
-    public void setEmployee(Employee employee) {
+    // REQUIRED BY TESTS
+    public EmployeeAvailability(Employee employee, LocalDate date, boolean available) {
         this.employee = employee;
-    }
- 
-    public LocalDate getAvailableDate() {
-        return availableDate;
-    }
- 
-    public void setAvailableDate(LocalDate availableDate) {
-        this.availableDate = availableDate;
-    }
- 
-    public Boolean getAvailable() {
-        return available;
-    }
- 
-    public void setAvailable(Boolean available) {
+        this.availableDate = date;
         this.available = available;
     }
+
+    // GETTERS & SETTERS
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Employee getEmployee() { return employee; }
+    public void setEmployee(Employee employee) { this.employee = employee; }
+
+    public LocalDate getAvailableDate() { return availableDate; }
+    public void setAvailableDate(LocalDate availableDate) { this.availableDate = availableDate; }
+
+    public boolean getAvailable() { return available; }
+    public void setAvailable(boolean available) { this.available = available; }
 }

@@ -1,125 +1,54 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(
-        name = "employee",
-        uniqueConstraints = @UniqueConstraint(columnNames = "email")
-)
+@Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Employee name is required")
-    @Column(nullable = false)
     private String fullName;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email must be valid")
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "Role is required")
-    @Column(nullable = false)
-    private String role = "STAFF";
+    private String role;
 
-    @NotBlank(message = "Skills are required")
-    @Column(nullable = false)
-    private String skills; 
+    private String skills;
 
-    @Min(value = 1, message = "Max weekly hours must be greater than 0")
-    @Column(nullable = false)
-    private Integer maxWeeklyHours;
+    private int maxWeeklyHours;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-   
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<EmployeeAvailability> availabilities;
-
-   
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<GeneratedShiftSchedule> schedules;
-
+    // REQUIRED BY JPA
     public Employee() {}
 
-    public Long getId() {
-        return id;
-    }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
- 
-    public String getFullName() {
-        return fullName;
-    }
- 
-    public void setFullName(String fullName) {
+    // REQUIRED BY TESTS
+    public Employee(String fullName, String email, String role, String skills, int maxWeeklyHours) {
         this.fullName = fullName;
-    }
- 
-    public String getEmail() {
-        return email;
-    }
- 
-    public void setEmail(String email) {
         this.email = email;
-    }
- 
-    public String getRole() {
-        return role;
-    }
- 
-    public void setRole(String role) {
-        this.role = role;
-    }
- 
-    public String getSkills() {
-        return skills;
-    }
- 
-    public void setSkills(String skills) {
+        this.role = (role == null ? "STAFF" : role);
         this.skills = skills;
-    }
- 
-    public Integer getMaxWeeklyHours() {
-        return maxWeeklyHours;
-    }
- 
-    public void setMaxWeeklyHours(Integer maxWeeklyHours) {
         this.maxWeeklyHours = maxWeeklyHours;
     }
- 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 
-    public List<EmployeeAvailability> getAvailabilities() {
-        return availabilities;
-    }
+    // GETTERS & SETTERS
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setAvailabilities(List<EmployeeAvailability> availabilities) {
-        this.availabilities = availabilities;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public List<GeneratedShiftSchedule> getSchedules() {
-        return schedules;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setSchedules(List<GeneratedShiftSchedule> schedules) {
-        this.schedules = schedules;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role == null ? "STAFF" : role; }
+
+    public String getSkills() { return skills; }
+    public void setSkills(String skills) { this.skills = skills; }
+
+    public int getMaxWeeklyHours() { return maxWeeklyHours; }
+    public void setMaxWeeklyHours(int maxWeeklyHours) { this.maxWeeklyHours = maxWeeklyHours; }
 }
